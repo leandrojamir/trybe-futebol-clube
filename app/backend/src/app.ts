@@ -30,4 +30,3 @@ class App {
 }
 
 export default App;
-// iniciando projeto
