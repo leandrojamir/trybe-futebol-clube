@@ -6,6 +6,7 @@ import UsersMiddlewares from '../middlewares/users.middlewares';
 
 const usersRoutes = Router();
 // A rota de ser do tipo POST;
+// 7 - Desenvolva o endpoint /login no back-end de maneira que ele não permita o acesso sem informar uma senha no front-end
 usersRoutes.post('/', UsersMiddlewares.usersValidate, UsersController.postUserController);
 
 export default usersRoutes;

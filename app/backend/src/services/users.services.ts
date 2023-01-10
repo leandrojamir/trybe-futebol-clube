@@ -7,9 +7,7 @@ class UsersServices {
   public static async postUserServices(userLogin: IUsers): Promise<IJwt | boolean> {
     const { email, password } = userLogin;
     const user = await userModel.findOne({ where: { email } });
-    if (!user) {
-      throw new Error('User not found');
-    }
+
     // As senhas que existem no banco de dados estão encriptadas. Veja a seção de Criptografia de Senhas para mais detalhes de como comparar a senha do banco com a senha do corpo da requisição.
     const check = user && compareSync(password, user.password);
     if (check) {
