@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { sign } from 'jsonwebtoken';
-import { IJwt } from '../interfaces/users.interfaces';
+import * as JWT from 'jsonwebtoken';
+import { IJwt, IToken } from '../interfaces/users.interfaces';
 
 config();
 
@@ -13,4 +14,14 @@ const createToken = (data: IJwt | boolean) => {
   return token;
 };
 
-export default createToken;
+// 12 - Desenvolva o endpoint /login/validate no back-end de maneira que ele retorne os dados corretamente no front-end
+const validateToken = (token: string) => {
+  // Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+  const erroLinter = JWT.verify(token, String(process.env.JWT_SECRET));
+  return erroLinter as IToken;
+};
+
+export {
+  createToken,
+  validateToken,
+};

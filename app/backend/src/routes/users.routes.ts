@@ -8,5 +8,7 @@ const usersRoutes = Router();
 // A rota de ser do tipo POST;
 // 7 - Desenvolva o endpoint /login no back-end de maneira que ele não permita o acesso sem informar uma senha no front-end
 usersRoutes.post('/', UsersMiddlewares.usersValidate, UsersController.postUserController);
+// 12 - Desenvolva o endpoint /login/validate no back-end de maneira que ele retorne os dados corretamente no front-end
+usersRoutes.get('/validate', UsersMiddlewares.tokenValidate, UsersController.getUserController);
 
 export default usersRoutes;

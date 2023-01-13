@@ -1,6 +1,6 @@
 // 3 - Desenvolva o endpoint /login no back-end de maneira que ele permita o acesso com dados válidos no front-end
 import { Request, Response } from 'express';
-import createToken from '../utils/jwt.util';
+import { createToken } from '../utils/jwt.util';
 import UsersServices from '../services/users.services';
 
 class UsersController {
@@ -20,6 +20,16 @@ class UsersController {
     const token = createToken(check);
 
     return res.status(200).json({ token });
+  }
+
+  // 12 - Desenvolva o endpoint /login/validate no back-end de maneira que ele retorne os dados corretamente no front-end
+  // Deve ser uma rota GET que receba um header com parâmetro authorization, onde ficará armazenado o token gerado no login;
+  static async getUserController(req: Request, res:Response) {
+    const check = await UsersServices.getUserServices(req.headers.authorization);
+    // A resposta deve ser de status 200 com um objeto contendo a role do user:
+    // { "role": "admin" }
+    console.log(check);
+    res.status(200).json(check);
   }
 }
 
