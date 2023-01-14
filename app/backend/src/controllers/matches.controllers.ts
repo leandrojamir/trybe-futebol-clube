@@ -73,6 +73,18 @@ class MatchesControllers {
     // }
     res.status(201).json(checkInProgress);
   }
+
+  // 24 - Desenvolva o endpoint /matches/:id/finish de modo que seja possível alterar o status inProgress de uma partida para false no banco de dados
+  // A rota deve ser do tipo PATCH;
+  // Será recebido o id pelo parâmetro da URL;
+  // Será validado que, ao finalizar uma partida, a alteração é feita no banco de dados e na página.
+  // Deve-se retornar, com um status 200, a seguinte mensagem:
+  // { "message": "Finished" }
+
+  static async patchMatchesControllers(req: Request, res: Response): Promise<void> {
+    await MatchesServices.patchMatchesServices(Number(req.params.id));
+    res.status(200).json({ message: 'Finished' });
+  }
 }
 
 export default MatchesControllers;

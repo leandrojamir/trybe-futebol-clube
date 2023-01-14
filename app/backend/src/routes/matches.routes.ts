@@ -21,6 +21,10 @@ matchesRoutes.post(
   MatchesControllers.postMatchesControllers,
 );
 
+// 24 - Desenvolva o endpoint /matches/:id/finish de modo que seja possível alterar o status inProgress de uma partida para false no banco de dados
+// A rota deve ser do tipo PATCH;
+matchesRoutes.patch('/:id/finish', MatchesControllers.patchMatchesControllers);
+
 // nota de atenção futura 2: req12 não aguardava uma message especifica mas req27 vai pedir { "message": "Token must be a valid token" }
 // Expected: "Token must be a valid token"
 // Received: "Invalid token"

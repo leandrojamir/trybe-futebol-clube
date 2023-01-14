@@ -88,6 +88,19 @@ class MatchesServices {
 
     return inProgress;
   }
+
+  // 24 - Desenvolva o endpoint /matches/:id/finish de modo que seja possível alterar o status inProgress de uma partida para false no banco de dados
+  // Será validado que, ao finalizar uma partida, a alteração é feita no banco de dados e na página.
+  // Será recebido o id pelo parâmetro da URL;
+  static async patchMatchesServices(id:number) {
+    const updateMatches = await matchModel.update({
+      inProgress: false }, { where: { id } });
+
+    return {
+      type: null,
+      message: updateMatches,
+    };
+  }
 }
 
 export default MatchesServices;
