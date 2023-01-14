@@ -12,6 +12,51 @@ class MatchesServices {
 
     return matches;
   }
+
+  // 20 - Desenvolva o endpoint /matches de forma que seja possível filtrar as partidas em andamento na tela de partidas do front-end
+  // Essa requisição deverá usar query string para definir o parâmetro: ex: matches?inProgress=true
+  // Exemplo de retorno da requisição:
+  // [
+  //   {
+  //     "id": 41,
+  //     "homeTeam": 16,
+  //     "homeTeamGoals": 2,
+  //     "awayTeam": 9,
+  //     "awayTeamGoals": 0,
+  //     "inProgress": true,
+  //     "teamHome": {
+  //       "teamName": "São Paulo"
+  //     },
+  //     "teamAway": {
+  //       "teamName": "Internacional"
+  //     }
+  //   },
+  //   {
+  //     "id": 42,
+  //     "homeTeam": 6,
+  //     "homeTeamGoals": 1,
+  //     "awayTeam": 1,
+  //     "awayTeamGoals": 0,
+  //     "inProgress": true,
+  //     "teamHome": {
+  //       "teamName": "Ferroviária"
+  //     },
+  //     "teamAway": {
+  //       "teamName": "Avaí/Kindermann"
+  //     }
+  //   }
+  // ]
+  static getQueryMatchesServices = async (query: string): Promise<any> => {
+    if (query === 'true') {
+      const inProgressTrue = await matchModel.findAll({
+        where: { inProgress: true },
+        include: [{ model: Team, as: 'teamHome' }, { model: Team, as: 'teamAway' },
+        ],
+      });
+
+      return inProgressTrue;
+    }
+  };
 }
 
 export default MatchesServices;

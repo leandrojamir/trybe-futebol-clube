@@ -38,13 +38,24 @@ import { Request, Response } from 'express';
 import MatchesServices from '../services/matches.services';
 
 class MatchesControllers {
-  static async getMatchesControllers(_req: Request, res: Response) {
-    try {
-      const check = await MatchesServices.getMatchesServices();
+  static async getMatchesControllers(req: Request, res: Response) {
+    // 20 - Desenvolva o endpoint /matches de forma que seja possível filtrar as partidas em andamento na tela de partidas do front-end
+    // A rota deverá ser do tipo GET e retornar uma lista de partidas filtradas;
+    // Será validado que, ao escolher a opção de partidas em andamento, serão filtradas todas as partidas em andamento;
+    // Essa requisição deverá usar query string para definir o parâmetro: ex: matches?inProgress=true
+    const { inProgress } = req.query;
+    if (inProgress) {
+      const checkInProgress = await MatchesServices.getQueryMatchesServices(String(inProgress));
 
-      res.status(200).json(check);
-    } catch (error) {
-      res.status(400).json({ error: 'badRequest' });
+      res.status(200).json(checkInProgress);
+    } else {
+      try {
+        const check = await MatchesServices.getMatchesServices();
+
+        res.status(200).json(check);
+      } catch (error) {
+        res.status(400).json({ error: 'badRequest' });
+      }
     }
   }
 }
