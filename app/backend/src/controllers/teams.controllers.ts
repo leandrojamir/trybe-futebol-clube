@@ -22,10 +22,25 @@ class TeamsControllers {
       //     },
       //     ...
       //   ]
-      console.log(check);
       res.status(200).json(check);
     } catch (error) {
       res.status(400).json({ error: 'badRequest' });
+    }
+  }
+
+  // 16 - Desenvolva o endpoint /teams/:id no back-end de forma que ele possa retornar dados de um time específico
+  static async getIdTeamsControllers(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const check = await TeamsServices.getIdTeamsServices(Number(id));
+      // Deve ser uma rota GET com resposta com status 200 e com um json contendo o retorno no seguinte modelo:
+      // {
+      //   "id": 5,
+      //   "teamName": "Cruzeiro"
+      // }
+      res.status(200).json(check);
+    } catch (error) {
+      res.status(401).json({ error: 'Not found' });
     }
   }
 }
