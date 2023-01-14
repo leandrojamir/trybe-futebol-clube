@@ -56,6 +56,17 @@ class MatchesServices {
 
       return inProgressTrue;
     }
+    // 21 - Desenvolva o endpoint /matches de forma que seja possível filtrar as partidas finalizadas na tela de partidas do front-end
+    // A rota deverá ser do tipo GET e retornar uma lista de partidas filtradas;
+    // Será validado que,ao escolher a opção de partidas finalizadas, serão filtradas todas as partidas finalizadas;
+    // Essa requisição deverá usar query string para definir o parâmetro. ex: matches?inProgress=false
+    const inProgressFalse = await matchModel.findAll({
+      where: { inProgress: false },
+      include: [{ model: Team, as: 'teamHome' }, { model: Team, as: 'teamAway' },
+      ],
+    });
+
+    return inProgressFalse;
   };
 }
 
