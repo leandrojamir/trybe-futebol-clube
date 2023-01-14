@@ -58,6 +58,21 @@ class MatchesControllers {
       }
     }
   }
+
+  // 23 - Desenvolva o endpoint /matches de modo que seja possível salvar uma partida com o status de inProgress como true no banco de dados
+  static async postMatchesControllers(req: Request, res: Response): Promise<void> {
+    const checkInProgress = await MatchesServices.postMatchesServices(req.body);
+    // Caso a partida seja inserida com sucesso, deve-se retornar os dados da partida, com status 201:
+    // {
+    //   "id": 1,
+    //   "homeTeam": 16,
+    //   "homeTeamGoals": 2,
+    //   "awayTeam": 8,
+    //   "awayTeamGoals": 2,
+    //   "inProgress": true,
+    // }
+    res.status(201).json(checkInProgress);
+  }
 }
 
 export default MatchesControllers;
