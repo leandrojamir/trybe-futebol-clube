@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import matchesRoutes from './matches.routes';
 import teamsRoutes from './teams.routes';
 import usersRoutes from './users.routes';
 
@@ -8,5 +9,7 @@ const routes = Router();
 routes.use('/login', usersRoutes);
 // 15 - Desenvolva o endpoint /teams no back-end de forma que ele possa retornar todos os times corretamente
 routes.use('/teams', teamsRoutes);
+// 19 - Desenvolva o endpoint /matches de forma que os dados apareçam corretamente na tela de partidas no front-end.
+routes.use('/matches', matchesRoutes);
 
 export default routes;
