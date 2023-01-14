@@ -6,11 +6,13 @@ class MatchesMiddlewares {
   // nota de atenção futura: foi necessario criar copia do tokenValidate req12 pois me deparei com seguinte erro ao usar tokenValidate pronto de usersMiddlewares:
   // Expected: "http://localhost:3000/matches"
   // Received: "http://localhost:3000/login"
+  // identificado erro replicado no req26, precisei de uma promise pois estava recebendo ainda no /login
   public static tokenValidate = (req: Request, res: Response, next: NextFunction) => {
     try {
       const { authorization } = req.headers;
       if (authorization) {
         const check = jwt.verify(authorization, process.env.JWT_SECRET as string);
+        // 27 - Desenvolva o endpoint /matches de forma que não seja possível inserir uma partida sem um token válido
         // nota de atenção futura 2: req12 não aguardava uma message especifica mas req27 vai pedir { "message": "Token must be a valid token" }
         // Expected: "Token must be a valid token"
         // Received: "Invalid token"

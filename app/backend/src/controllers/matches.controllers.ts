@@ -60,7 +60,15 @@ class MatchesControllers {
   }
 
   // 23 - Desenvolva o endpoint /matches de modo que seja possível salvar uma partida com o status de inProgress como true no banco de dados
-  static async postMatchesControllers(req: Request, res: Response): Promise<void> {
+  static async postMatchesControllers(req: Request, res: Response) {
+    // 26 - Desenvolva o endpoint /matches de forma que não seja possível inserir uma partida com um time que não existe na tabela teams
+    // Será validado que não é possível inserir uma partida com um time que não existe na tabela teams;
+    // Caso algum dos times não esteja cadastrado no banco de dados, deve-se retornar, com um status 404, a seguinte mensagem:
+    // { "message": "There is no team with such id!" }
+    const check = await MatchesServices.checkMatchesServices(req.body);
+    if (typeof check === 'object') {
+      return res.status(404).json(check);
+    }
     const checkInProgress = await MatchesServices.postMatchesServices(req.body);
     // Caso a partida seja inserida com sucesso, deve-se retornar os dados da partida, com status 201:
     // {
@@ -71,18 +79,15 @@ class MatchesControllers {
     //   "awayTeamGoals": 2,
     //   "inProgress": true,
     // }
-    res.status(201).json(checkInProgress);
+    return res.status(201).json(checkInProgress);
   }
 
   // 24 - Desenvolva o endpoint /matches/:id/finish de modo que seja possível alterar o status inProgress de uma partida para false no banco de dados
-  // A rota deve ser do tipo PATCH;
-  // Será recebido o id pelo parâmetro da URL;
-  // Será validado que, ao finalizar uma partida, a alteração é feita no banco de dados e na página.
-  // Deve-se retornar, com um status 200, a seguinte mensagem:
-  // { "message": "Finished" }
-
   static async patchMatchesControllers(req: Request, res: Response): Promise<void> {
     await MatchesServices.patchMatchesServices(Number(req.params.id));
+
+    // Deve-se retornar, com um status 200, a seguinte mensagem:
+    // { "message": "Finished" }
     res.status(200).json({ message: 'Finished' });
   }
 }

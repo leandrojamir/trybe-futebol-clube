@@ -101,6 +101,19 @@ class MatchesServices {
       message: updateMatches,
     };
   }
+
+  // 26 - Desenvolva o endpoint /matches de forma que não seja possível inserir uma partida com um time que não existe na tabela teams
+  // Será validado que não é possível inserir uma partida com um time que não existe na tabela teams;
+  // Caso algum dos times não esteja cadastrado no banco de dados, deve-se retornar, com um status 404, a seguinte mensagem:
+  // { "message": "There is no team with such id!" }
+  static async checkMatchesServices(match: any): Promise<any> {
+    const { homeTeam } = match;
+    const id = Number(homeTeam);
+    const check = await Team.findAll({ where: { id } });
+    if (check.length === 0) {
+      return { message: 'There is no team with such id!' };
+    }
+  }
 }
 
 export default MatchesServices;
