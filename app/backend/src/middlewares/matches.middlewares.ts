@@ -3,24 +3,42 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
 class MatchesMiddlewares {
-  // 12 - Desenvolva o endpoint /login/validate no back-end de maneira que ele retorne os dados corretamente no front-end
-  // Deve ser uma rota GET que receba um header com parâmetro authorization, onde ficará armazenado o token gerado no login;
-  // O avaliador verificará se ao tentar bater na rota com um token válido, o mesmo retornará o tipo de usuário.
+  // nota de atenção futura: foi necessario criar copia do tokenValidate req12 pois me deparei com seguinte erro ao usar tokenValidate pronto de usersMiddlewares:
+  // Expected: "http://localhost:3000/matches"
+  // Received: "http://localhost:3000/login"
   public static tokenValidate = (req: Request, res: Response, next: NextFunction) => {
     try {
       const { authorization } = req.headers;
       if (authorization) {
         const check = jwt.verify(authorization, process.env.JWT_SECRET as string);
+        // nota de atenção futura 2: req12 não aguardava uma message especifica mas req27 vai pedir { "message": "Token must be a valid token" }
+        // Expected: "Token must be a valid token"
+        // Received: "Invalid token"
         if (!check) {
-          return res.status(401).json({ message: 'Invalid token' });
+          return res.status(401).json({ message: 'Token must be a valid token' });
         }
       }
 
       next();
     } catch (error) {
-      return res.status(401).json({ message: 'Invalid token' });
+      return res.status(401).json({ message: 'Token must be a valid token' });
     }
   };
+
+  // 25 - Desenvolva o endpoint /matches de forma que não seja possível inserir uma partida com times iguais
+  public static matchValidate(req: Request, res: Response, next: NextFunction) {
+    const { homeTeam, awayTeam } = req.body;
+    // Será validado que não é possível inserir uma partida em que o homeTeam e o awayTeam sejam iguais, por exemplo: Barcelona x Barcelona;
+    if (homeTeam !== awayTeam) {
+      next();
+    // Caso isso ocorra, deve-se retornar, com um status 422, a seguinte mensagem::
+    // { "message": "It is not possible to create a match with two equal teams" }
+    } else {
+      return res.status(422).json(
+        { message: 'It is not possible to create a match with two equal teams' },
+      );
+    }
+  }
 }
 
 export default MatchesMiddlewares;
