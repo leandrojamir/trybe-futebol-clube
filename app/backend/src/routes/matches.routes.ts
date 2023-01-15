@@ -28,3 +28,4 @@ matchesRoutes.patch('/:id/finish', MatchesControllers.patchMatchesControllers);
 matchesRoutes.patch('/:id', MatchesControllers.updateMatchesControllers);
 
 export default matchesRoutes;
+// The self-hosted runner: self-hosted-runner-vdxk2-7mbzf lost communication with the server
