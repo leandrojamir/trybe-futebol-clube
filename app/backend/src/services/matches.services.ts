@@ -92,7 +92,7 @@ class MatchesServices {
   // 24 - Desenvolva o endpoint /matches/:id/finish de modo que seja possível alterar o status inProgress de uma partida para false no banco de dados
   // Será validado que, ao finalizar uma partida, a alteração é feita no banco de dados e na página.
   // Será recebido o id pelo parâmetro da URL;
-  static async patchMatchesServices(id:number) {
+  static async patchMatchesServices(id: number) {
     const updateMatches = await matchModel.update({
       inProgress: false }, { where: { id } });
 
@@ -113,6 +113,29 @@ class MatchesServices {
     if (check.length === 0) {
       return { message: 'There is no team with such id!' };
     }
+  }
+
+  // 28 - Desenvolva o endpoint /matches/:id de forma que seja possível atualizar partidas em andamento
+  // Será recebido o id pelo parâmetro da URL;
+  static async getIdMatchesServices(id: number): Promise<IMatch | null> {
+    const matches = await matchModel.findOne({ where: { id } });
+
+    return matches;
+  }
+
+  // Será avaliado que é possível alterar o resultado de uma partida.
+  // O corpo da requisição terá o seguinte formato:
+  // {
+  //   "homeTeamGoals": 3,
+  //   "awayTeamGoals": 1
+  // }
+  static async updateMatchesServices(payload: IMatch, id: number) {
+    const { homeTeamGoals, awayTeamGoals } = payload;
+    await matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    const upMatches = MatchesServices.getIdMatchesServices(id);
+    console.log(upMatches);
+
+    return upMatches;
   }
 }
 

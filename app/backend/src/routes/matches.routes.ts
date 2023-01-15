@@ -23,4 +23,8 @@ matchesRoutes.post(
 // A rota deve ser do tipo PATCH;
 matchesRoutes.patch('/:id/finish', MatchesControllers.patchMatchesControllers);
 
+// 28 - Desenvolva o endpoint /matches/:id de forma que seja possível atualizar partidas em andamento
+// O endpoint deve ser do tipo PATCH;
+matchesRoutes.patch('/:id', MatchesControllers.updateMatchesControllers);
+
 export default matchesRoutes;

@@ -90,6 +90,15 @@ class MatchesControllers {
     // { "message": "Finished" }
     res.status(200).json({ message: 'Finished' });
   }
+
+  // 28 - Desenvolva o endpoint /matches/:id de forma que seja possível atualizar partidas em andamento
+  static async updateMatchesControllers(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+    const checkId = await MatchesServices.updateMatchesServices(req.body, Number(id));
+
+    // Será avaliado que é o endpoint responde à requisição com um status 200 e qualquer corpo.
+    res.status(200).json(checkId);
+  }
 }
 
 export default MatchesControllers;
