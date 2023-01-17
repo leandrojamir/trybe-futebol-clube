@@ -78,6 +78,41 @@ class LeaderboardsServices {
 
     return data;
   }
+
+  // 33 - Desenvolva o endpoint /leaderboard de forma que seja possível filtrar a classificação geral dos times na tela de classificação do front-end com os dados iniciais do banco de dados
+  // O endpoint deverá ser do tipo GET;
+  // Será avaliado que ao fazer a requisição ao endpoint /leaderboard, serão retornados os campos e valores corretos considerando os dados iniciais do banco de dados.
+  // Partidas que estiverem em andamento (não foram finalizadas) não devem ser consideradas.
+  static async getAllLeaderboardServices() {
+    const getHome = await this.getHomeLeaderboardServices();
+    const getAway = await this.getAwayLeaderboardServices();
+    const classification = getHome.map((element) => {
+      const getAll = getAway.find((index) => element.name === index.name);
+
+      return this.statisticsAll(element, getAll as ILeaderboard);
+    });
+
+    return tiebreaker(classification);
+  }
+
+  private static statisticsAll(hostObject: ILeaderboard, visitorObject: ILeaderboard) {
+    const data = {
+      name: hostObject.name,
+      totalPoints: hostObject.totalPoints + visitorObject.totalPoints,
+      totalGames: hostObject.totalGames + visitorObject.totalGames,
+      totalVictories: hostObject.totalVictories + visitorObject.totalVictories,
+      totalDraws: hostObject.totalDraws + visitorObject.totalDraws,
+      totalLosses: hostObject.totalLosses + visitorObject.totalLosses,
+      goalsFavor: hostObject.goalsFavor + visitorObject.goalsFavor,
+      goalsOwn: hostObject.goalsOwn + visitorObject.goalsOwn,
+      goalsBalance: ((hostObject.goalsFavor + visitorObject.goalsFavor)
+       - (hostObject.goalsOwn + visitorObject.goalsOwn)),
+      efficiency: (((hostObject.totalPoints + visitorObject.totalPoints)
+       / ((hostObject.totalGames + visitorObject.totalGames) * 3)) * 100).toFixed(2),
+    };
+
+    return data;
+  }
 }
 
 export default LeaderboardsServices;

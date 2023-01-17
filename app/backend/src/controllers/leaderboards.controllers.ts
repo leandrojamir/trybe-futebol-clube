@@ -13,6 +13,12 @@ class LeaderboardsControllers {
     const result = (await LeaderboardsServices.getAwayLeaderboardServices());
     res.status(200).json(result);
   }
+
+  // 33 - Desenvolva o endpoint /leaderboard de forma que seja possível filtrar a classificação geral dos times na tela de classificação do front-end com os dados iniciais do banco de dados
+  static async getAllLeaderboardControllers(_req: Request, res: Response): Promise<void> {
+    const result = (await LeaderboardsServices.getAllLeaderboardServices());
+    res.status(200).json(result);
+  }
 }
 
 export default LeaderboardsControllers;
