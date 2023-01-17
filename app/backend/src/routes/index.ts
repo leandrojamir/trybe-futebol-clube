@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import leaderboardsRoutes from './leaderboards.routes';
 import matchesRoutes from './matches.routes';
 import teamsRoutes from './teams.routes';
 import usersRoutes from './users.routes';
@@ -11,5 +12,7 @@ routes.use('/login', usersRoutes);
 routes.use('/teams', teamsRoutes);
 // 19 - Desenvolva o endpoint /matches de forma que os dados apareçam corretamente na tela de partidas no front-end.
 routes.use('/matches', matchesRoutes);
+// 29 - Desenvolva o endpoint /leaderboard/home de forma que seja possível filtrar as classificações dos times da casa na tela de classificação do front-end com os dados iniciais do banco de dados
+routes.use('/leaderboard', leaderboardsRoutes);
 
 export default routes;
