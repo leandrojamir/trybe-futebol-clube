@@ -42,3 +42,5 @@ class LeaderboardsServices {
 }
 
 export default LeaderboardsServices;
+// Evaluator
+// The runner has received a shutdown signal.
