@@ -5,9 +5,11 @@
 import { ITeam, ILeaderboard } from '../interfaces/leaderboards.interfaces';
 import { getTeam, goalDifference, tiebreaker, teams, totalGames,
   totalPoints, totalVictoriesDrawsLosses } from '../utils/leaderboard.util';
+import { getTeamAway, goalDifferenceAway, teamsAway,
+  totalPointsAway, totalVictoriesDrawsLossesAway } from '../utils/leaderboardAway.util';
 
 class LeaderboardsServices {
-  static async getLeaderboardServices(): Promise<ILeaderboard[]> {
+  static async getHomeLeaderboardServices(): Promise<ILeaderboard[]> {
     const matches = await getTeam();
     const map = matches.map(async (element) => this.statistics(element as ITeam));
     const leader = await Promise.all(map);
@@ -39,8 +41,43 @@ class LeaderboardsServices {
 
     return data;
   }
+
+  // 31 - Desenvolva o endpoint /leaderboard/away, de forma que seja possível filtrar as classificações dos times quando visitantes na tela de classificação do front-end, com os dados iniciais do banco de dados
+  // O endpoint deverá ser do tipo GET;
+  // Será avaliado que ao fazer a requisição ao endpoint /leaderboard/away, serão retornados os campos e valores corretos considerando os dados iniciais do banco de dados;
+  // Partidas que estiverem em andamento (não foram finalizadas) não devem ser consideradas.
+  static async getAwayLeaderboardServices(): Promise<ILeaderboard[]> {
+    const matches = await getTeamAway();
+    const map = matches.map(async (element) => this.statisticsAway(element as ITeam));
+    const leaderAway = await Promise.all(map);
+    const setName = new Set();
+    const classification = leaderAway.filter((element) => {
+      const doubleAway = setName.has(element.name);
+      setName.add(element.name);
+
+      return !doubleAway;
+    });
+
+    return tiebreaker(classification);
+  }
+
+  private static async statisticsAway(object: ITeam) {
+    const visitor = await teamsAway(object.awayTeam);
+    const data = {
+      name: object.teamAway.teamName,
+      totalPoints: totalPointsAway(visitor),
+      totalGames: totalGames(visitor),
+      totalVictories: totalVictoriesDrawsLossesAway(visitor, 'totalVictories'),
+      totalDraws: totalVictoriesDrawsLossesAway(visitor, 'totalDraws'),
+      totalLosses: totalVictoriesDrawsLossesAway(visitor, 'totalLosses'),
+      goalsFavor: goalDifferenceAway(visitor, 'goalsFavor'),
+      goalsOwn: goalDifferenceAway(visitor, 'goalsOwn'),
+      goalsBalance: goalDifferenceAway(visitor),
+      efficiency: ((totalPointsAway(visitor) / (totalGames(visitor) * 3)) * 100).toFixed(2),
+    };
+
+    return data;
+  }
 }
 
 export default LeaderboardsServices;
-// Evaluator
-// The runner has received a shutdown signal.

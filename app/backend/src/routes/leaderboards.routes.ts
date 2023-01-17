@@ -4,6 +4,8 @@ import LeaderboardsControllers from '../controllers/leaderboards.controllers';
 
 const leaderboardsRoutes = Router();
 // O endpoint deverá ser do tipo GET;
-leaderboardsRoutes.get('/home', LeaderboardsControllers.getLeaderboardsControllers);
+leaderboardsRoutes.get('/home', LeaderboardsControllers.getHomeLeaderboardsControllers);
+// 31 - Desenvolva o endpoint /leaderboard/away, de forma que seja possível filtrar as classificações dos times quando visitantes na tela de classificação do front-end, com os dados iniciais do banco de dados
+leaderboardsRoutes.get('/away', LeaderboardsControllers.getAwayLeaderboardsControllers);
 
 export default leaderboardsRoutes;
